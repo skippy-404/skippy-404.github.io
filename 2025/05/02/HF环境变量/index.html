@@ -189,7 +189,7 @@
   const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
 
   window.pjax = new Pjax({
-    elements: 'a:not([target="_blank"]):not([href="/music/"])',
+    elements: 'a:not([target="_blank"])',
     selectors: pjaxSelectors,
     cacheBust: false,
     analytics: false,
