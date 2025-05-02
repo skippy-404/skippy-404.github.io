@@ -4,11 +4,30 @@
   
     
     <entry>
+      <title>阶段工作总结</title>
+      <link href="/2025/05/02/%E9%98%B6%E6%AE%B5%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/"/>
+      <url>/2025/05/02/%E9%98%B6%E6%AE%B5%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="人脸风格化可行性方案"><a href="#人脸风格化可行性方案" class="headerlink" title="人脸风格化可行性方案"></a>人脸风格化可行性方案</h1><blockquote><p>  目前路线为 多数据源启动数据，小样本训练 Lora 后，使用数据合成循环管道，不断过滤优化数据，生成大量数据，最终训练出高质量的指令引导的人脸风格化模型</p></blockquote><h2 id="一、现有开源工具生成"><a href="#一、现有开源工具生成" class="headerlink" title="一、现有开源工具生成"></a>一、现有开源工具生成</h2><h3 id="1、通过-EasyControl-生成-Ghibli-风格的人脸数据"><a href="#1、通过-EasyControl-生成-Ghibli-风格的人脸数据" class="headerlink" title="1、通过 EasyControl 生成 Ghibli 风格的人脸数据"></a>1、通过 EasyControl 生成 Ghibli 风格的人脸数据</h3><p><a href="https://github.com/Xiaojiu-z/EasyControl">https://github.com/Xiaojiu-z/EasyControl</a></p><h3 id="2、通过-豆包-生成部分风格数据"><a href="#2、通过-豆包-生成部分风格数据" class="headerlink" title="2、通过 豆包 生成部分风格数据"></a>2、通过 豆包 生成部分风格数据</h3><blockquote><p>  还需注意是否开源、开源协议</p></blockquote><p>例如 <code>3D动漫、插画、绘本</code> … 均有不错的表现</p><h3 id="3、通过-HiDream-I1-生成数据"><a href="#3、通过-HiDream-I1-生成数据" class="headerlink" title="3、通过 HiDream-I1 生成数据"></a>3、通过 HiDream-I1 生成数据</h3><p><a href="https://github.com/HiDream-ai/HiDream-I1">https://github.com/HiDream-ai/HiDream-I1</a></p><p>在线测试，风格化后均为半身照，这意味着只能专门处理半身人像</p><p>部署显存需 <code>70GB</code> 以上，待实验</p><h3 id="4、SD-3-5"><a href="#4、SD-3-5" class="headerlink" title="4、SD 3.5"></a>4、SD 3.5</h3><p><a href="https://platform.stability.ai/">https://platform.stability.ai/</a></p><p>在以往实验中，SD 3.5 生成其预设的风格能力还是非常不错的，例如<code>pixel、cyberpunk</code>，不过模型还<strong>没有开源</strong></p><h2 id="二、Multi-Control-面部解偶-deStyle"><a href="#二、Multi-Control-面部解偶-deStyle" class="headerlink" title="二、Multi_Control 面部解偶 deStyle"></a>二、Multi_Control 面部解偶 deStyle</h2><blockquote><p>  数据生成步骤中的 <code>核心创新点 </code></p></blockquote><p>使用 FLUX+ControlNet 为base，通过分别提取人脸和背景 canny，同时设有不同的权重，通过 prompt 引导实现已风格化图像的去风格化任务。</p><p>基于现有实验拟定的<strong>最佳组合参数</strong>如下</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">control_image=[</span><br><span class="line">    control_image_pose,</span><br><span class="line">    control_image_canny, <span class="comment">#background</span></span><br><span class="line">    control_image_canny_face,</span><br><span class="line">    <span class="comment"># control_image_depth</span></span><br><span class="line">    ], </span><br><span class="line">controlnet_conditioning_scale=[<span class="number">0.33</span>,<span class="number">0.5</span>,<span class="number">0.3</span>],</span><br><span class="line">control_guidance_end=[<span class="number">0.3</span>,<span class="number">0.8</span>,<span class="number">0.65</span>],</span><br><span class="line">num_inference_steps=<span class="number">45</span>,</span><br><span class="line">guidance_scale=<span class="number">8</span>,</span><br></pre></td></tr></table></figure><h3 id="尝试过的部分失败组合"><a href="#尝试过的部分失败组合" class="headerlink" title="尝试过的部分失败组合"></a>尝试过的部分失败组合</h3><ul><li><p>Pose + Canny_backgroud , 缺少面部信息，模型生成面部内容质量很低</p></li><li><p>Canny_face + Canny_backgrond , 缺少 <code>Pose</code> 的引导与平衡，<code>Canny</code> 完全占主导地位，效果不佳</p></li><li><p>…+ Depth , 高权重下 <code>Depth</code> 的阴影部分严重影响生成图片的背景，使背景变暗，低权重几乎没有作用</p></li></ul><h3 id="当前组合下的几个疑难点"><a href="#当前组合下的几个疑难点" class="headerlink" title="当前组合下的几个疑难点"></a>当前组合下的几个疑难点</h3><ul><li><p>由于目前仅基于 FFHQ 数据集测试，均为人脸或小半身人脸，且于 <code>Canny</code> 控制下 <code>Pose</code> 作用甚微，主要起补充信息作用，后续若扩张为半身人像或全身人像，该参数可能需重新考虑</p></li><li><p>Double Canny 权重拮抗，若人脸 <code>canny</code> 权重高于背景，则可能会出现过拟合的状态，<code>eg：Ghibli 的大眼睛</code>，若背景 <code>canny</code> 权重高于人脸，则可能会出现丢失面部内容信息，所以这两个参数还需不断测试，或探索别的办法来解决这一问题</p></li><li><p>prompt 质量严重影响生成质量，这是最让我头疼的一点，同样参数下，不同的 <code>prompt</code> 产出的内容质量差别不小，个人认为 <code>prompt</code> 中应至少含有以下几点信息 <code>头发颜色，衣服颜色，背景颜色，肤色，真实感，真实皮肤纹理</code>等等</p></li><li><p>step、guidance_scale 的值同样值得推敲</p></li></ul><p>后续应批量处理数据，不断改进参数，找到适配这样去风格处理手段的风格，测试 Multi_control 和 Single_control的差异</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 技术 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>常用的 HF 环境变量</title>
       <link href="/2025/05/02/HF%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"/>
       <url>/2025/05/02/HF%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>以 linux 为例，在<code>~/.bashrc</code>中添加如下内容：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HUGGINGFACE_HUB_CACHE=<span class="string">&quot;/root/autodl-tmp/huggingface&quot;</span>  <span class="comment"># 替换为你的缓存目录</span></span><br><span class="line"><span class="built_in">export</span> HF_HOME=<span class="string">&quot;/root/autodl-tmp/huggingface&quot;</span> <span class="comment"># 替换为你的缓存目录</span></span><br><span class="line"><span class="built_in">export</span> HF_ENDPOINT=https://hf-mirror.com <span class="comment"># HF镜像地址</span></span><br></pre></td></tr></table></figure><p>然后执行<code>source ~/.bashrc</code>使环境变量生效。  </p><blockquote><p>注意：<code>/autodl-tmp/huggingface</code>是我在 autodl 上的一个临时目录，你可以根据自己的需要修改。  </p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HUGGINGFACE_HUB_CACHE</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HF_HOME</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HF_ENDPOINT</span></span><br></pre></td></tr></table></figure><p>如果输出以下结果，说明配置成功  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/root/autodl-tmp/huggingface</span><br><span class="line">/root/autodl-tmp/huggingface</span><br><span class="line">https://hf-mirror.com</span><br></pre></td></tr></table></figure>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>以 linux 为例，在<code>~/.bashrc</code>中添加如下内容：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HUGGINGFACE_HUB_CACHE=<span class="string">&quot;/root/autodl-tmp/huggingface&quot;</span>  <span class="comment"># 替换为你的缓存目录</span></span><br><span class="line"><span class="built_in">export</span> HF_HOME=<span class="string">&quot;/root/autodl-tmp/huggingface&quot;</span> <span class="comment"># 替换为你的缓存目录</span></span><br><span class="line"><span class="built_in">export</span> HF_ENDPOINT=https://hf-mirror.com <span class="comment"># HF镜像地址</span></span><br></pre></td></tr></table></figure><p>然后执行<code>source ~/.bashrc</code>使环境变量生效。  </p><blockquote><p>注意：<code>/autodl-tmp/huggingface</code>是我在 autodl 上的一个临时目录，你可以根据自己的需要修改。  </p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HUGGINGFACE_HUB_CACHE</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HF_HOME</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HF_ENDPOINT</span></span><br></pre></td></tr></table></figure><p>如果输出以下结果，说明配置成功  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/root/autodl-tmp/huggingface</span><br><span class="line">/root/autodl-tmp/huggingface</span><br><span class="line">https://hf-mirror.com</span><br></pre></td></tr></table></figure><p>下载 huggingface-hub 库，使用 <code>huggingface-cli login</code> 命令登录 huggingface </p>]]></content>
       
       
       
@@ -96,11 +115,11 @@
     
     
     <entry>
-      <title>hi</title>
-      <link href="/hi/index.html"/>
-      <url>/hi/index.html</url>
+      <title></title>
+      <link href="/js/anzhiyufunction.js"/>
+      <url>/js/anzhiyufunction.js</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+        <content type="html"><![CDATA[// 音乐绑定事件function musicBindEvent() {    document.querySelector("#nav-music .aplayer-music").addEventListener("click", function () {      anzhiyu.musicTelescopic();    });    document.querySelector("#nav-music .aplayer-button").addEventListener("click", function () {      anzhiyu.musicToggle(false);    });  }]]></content>
       
     </entry>
     
@@ -118,11 +137,11 @@
     
     
     <entry>
-      <title></title>
-      <link href="/js/anzhiyufunction.js"/>
-      <url>/js/anzhiyufunction.js</url>
+      <title>旅行</title>
+      <link href="/travel/index.html"/>
+      <url>/travel/index.html</url>
       
-        <content type="html"><![CDATA[// 音乐绑定事件function musicBindEvent() {    document.querySelector("#nav-music .aplayer-music").addEventListener("click", function () {      anzhiyu.musicTelescopic();    });    document.querySelector("#nav-music .aplayer-button").addEventListener("click", function () {      anzhiyu.musicToggle(false);    });  }]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="看景不如听景"><a href="#看景不如听景" class="headerlink" title="看景不如听景"></a>看景不如听景</h1><h4 id="记录自高考以后去过的地方"><a href="#记录自高考以后去过的地方" class="headerlink" title="记录自高考以后去过的地方"></a>记录自高考以后去过的地方</h4><h2 id="2023"><a href="#2023" class="headerlink" title="2023"></a>2023</h2><h3 id="2023-06-西藏"><a href="#2023-06-西藏" class="headerlink" title="2023-06 - 西藏"></a>2023-06 - 西藏</h3><img src="/images/2023-06-01.jpg" alt="2023-06-01" style="width: 100%;"><h2 id="2024"><a href="#2024" class="headerlink" title="2024"></a>2024</h2><h3 id="2024-08-深圳"><a href="#2024-08-深圳" class="headerlink" title="2024-08 - 深圳"></a>2024-08 - 深圳</h3><h3 id="2024-09-天津"><a href="#2024-09-天津" class="headerlink" title="2024-09 - 天津"></a>2024-09 - 天津</h3>]]></content>
       
     </entry>
     
@@ -140,11 +159,11 @@
     
     
     <entry>
-      <title>旅行</title>
-      <link href="/travel/index.html"/>
-      <url>/travel/index.html</url>
+      <title>hi</title>
+      <link href="/hi/index.html"/>
+      <url>/hi/index.html</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="看景不如听景"><a href="#看景不如听景" class="headerlink" title="看景不如听景"></a>看景不如听景</h1><h4 id="记录自高考以后去过的地方"><a href="#记录自高考以后去过的地方" class="headerlink" title="记录自高考以后去过的地方"></a>记录自高考以后去过的地方</h4><h2 id="2023"><a href="#2023" class="headerlink" title="2023"></a>2023</h2><h3 id="2023-06-西藏"><a href="#2023-06-西藏" class="headerlink" title="2023-06 - 西藏"></a>2023-06 - 西藏</h3><img src="/images/2023-06-01.jpg" alt="2023-06-01" style="width: 100%;"><h2 id="2024"><a href="#2024" class="headerlink" title="2024"></a>2024</h2><h3 id="2024-08-深圳"><a href="#2024-08-深圳" class="headerlink" title="2024-08 - 深圳"></a>2024-08 - 深圳</h3><h3 id="2024-09-天津"><a href="#2024-09-天津" class="headerlink" title="2024-09 - 天津"></a>2024-09 - 天津</h3>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
       
     </entry>
     
