@@ -1485,7 +1485,7 @@ table td {
   vertical-align: middle;
 }
 *::selection {
-  background: #47636e;
+  background: #5cabb3;
   color: #f7f7f7;
 }
 button {
@@ -4193,7 +4193,7 @@ figure.highlight pre .javascript .function {
   overflow-wrap: break-word;
 }
 .container a {
-  color: #99a9bf;
+  color: #5cabb3;
 }
 .container a:hover {
   text-decoration: underline;
