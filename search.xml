@@ -111,6 +111,17 @@
     
     <entry>
       <title></title>
+      <link href="/js/anzhiyuOnlyOne.js"/>
+      <url>/js/anzhiyuOnlyOne.js</url>
+      
+        <content type="html"><![CDATA[var anzhiyu_musicPlaying = false;var anzhiyu_musicFirst = false;]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
       <link href="/js/anzhiyu.js"/>
       <url>/js/anzhiyu.js</url>
       
@@ -126,17 +137,6 @@
       <url>/js/anzhiyufunction.js</url>
       
         <content type="html"><![CDATA[// 音乐绑定事件function musicBindEvent() {    document.querySelector("#nav-music .aplayer-music").addEventListener("click", function () {      anzhiyu.musicTelescopic();    });    document.querySelector("#nav-music .aplayer-button").addEventListener("click", function () {      anzhiyu.musicToggle(false);    });  }]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/js/anzhiyuOnlyOne.js"/>
-      <url>/js/anzhiyuOnlyOne.js</url>
-      
-        <content type="html"><![CDATA[var anzhiyu_musicPlaying = false;var anzhiyu_musicFirst = false;]]></content>
       
     </entry>
     
@@ -170,6 +170,17 @@
       <url>/travel/index.html</url>
       
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="看景不如听景"><a href="#看景不如听景" class="headerlink" title="看景不如听景"></a>看景不如听景</h1><h4 id="记录自高考以后去过的地方"><a href="#记录自高考以后去过的地方" class="headerlink" title="记录自高考以后去过的地方"></a>记录自高考以后去过的地方</h4><h2 id="2023"><a href="#2023" class="headerlink" title="2023"></a>2023</h2><h3 id="2023-06-西藏"><a href="#2023-06-西藏" class="headerlink" title="2023-06 - 西藏"></a>2023-06 - 西藏</h3><img src="/images/2023-06-01.jpg" alt="2023-06-01" style="width: 100%;"><h2 id="2024"><a href="#2024" class="headerlink" title="2024"></a>2024</h2><h3 id="2024-08-深圳"><a href="#2024-08-深圳" class="headerlink" title="2024-08 - 深圳"></a>2024-08 - 深圳</h3><h3 id="2024-09-天津"><a href="#2024-09-天津" class="headerlink" title="2024-09 - 天津"></a>2024-09 - 天津</h3>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>about</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
       
     </entry>
     
