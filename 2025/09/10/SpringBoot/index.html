@@ -1,0 +1,591 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SpringBoot 常用注解 | skippy's life</title><meta name="author" content="skippy"><meta name="copyright" content="skippy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Spring Boot 常用注解一、 启动与核心配置注解   注解 说明 核心示例    @SpringBootApplication Spring Boot 启动类注解。一个复合注解，包含了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan。是所有 Spring Boot 应用的起点。 java @SpringB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot 常用注解">
+<meta property="og:url" content="http://example.com/2025/09/10/SpringBoot/index.html">
+<meta property="og:site_name" content="skippy&#39;s life">
+<meta property="og:description" content="Spring Boot 常用注解一、 启动与核心配置注解   注解 说明 核心示例    @SpringBootApplication Spring Boot 启动类注解。一个复合注解，包含了 @SpringBootConfiguration、@EnableAutoConfiguration 和 @ComponentScan。是所有 Spring Boot 应用的起点。 java @SpringB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/wangfei.jpg">
+<meta property="article:published_time" content="2025-09-10T08:28:06.000Z">
+<meta property="article:modified_time" content="2025-09-10T08:29:28.804Z">
+<meta property="article:author" content="skippy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/wangfei.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SpringBoot 常用注解",
+  "url": "http://example.com/2025/09/10/SpringBoot/",
+  "image": "http://example.com/img/wangfei.jpg",
+  "datePublished": "2025-09-10T08:28:06.000Z",
+  "dateModified": "2025-09-10T08:29:28.804Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "skippy",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/wangfei.jpg"><link rel="canonical" href="http://example.com/2025/09/10/SpringBoot/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SpringBoot 常用注解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/aplayer.css"><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/timego.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/wangfei.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-timeline"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/aboutme/"><i class="fa-fw fas fa-user"></i><span> About me</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/timego.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">skippy's life</span></a><a class="nav-page-title" href="/"><span class="site-name">SpringBoot 常用注解</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-timeline"></i><span> 时间线</span></a></div><div class="menus_item"><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></div><div class="menus_item"><a class="site-page" href="/movies"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></div><div class="menus_item"><a class="site-page" href="/aboutme/"><i class="fa-fw fas fa-user"></i><span> About me</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SpringBoot 常用注解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-10T08:28:06.000Z" title="发表于 2025-09-10 16:28:06">2025-09-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-10T08:29:28.804Z" title="更新于 2025-09-10 16:29:28">2025-09-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="Spring-Boot-常用注解"><a href="#Spring-Boot-常用注解" class="headerlink" title="Spring Boot 常用注解"></a>Spring Boot 常用注解</h3><h4 id="一、-启动与核心配置注解"><a href="#一、-启动与核心配置注解" class="headerlink" title="一、 启动与核心配置注解"></a>一、 启动与核心配置注解</h4><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+<th align="left">核心示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>@SpringBootApplication</code></strong></td>
+<td align="left"><strong>Spring Boot 启动类注解</strong>。一个复合注解，包含了 <code>@SpringBootConfiguration</code>、<code>@EnableAutoConfiguration</code> 和 <code>@ComponentScan</code>。是所有 Spring Boot 应用的起点。</td>
+<td align="left"><code>java @SpringBootApplication public class MyApplication &#123; public static void main(String[] args) &#123; SpringApplication.run(MyApplication.class, args); &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@EnableAutoConfiguration</code></td>
+<td align="left"><strong>启用自动配置</strong>。告诉 Spring Boot 根据你添加的依赖（jar包）来“猜测”并自动配置你想要的 Bean。例如，看到 <code>spring-boot-starter-web</code> 就会自动配置 Tomcat 和 Spring MVC。</td>
+<td align="left">(通常由 <code>@SpringBootApplication</code> 隐式包含)</td>
+</tr>
+<tr>
+<td align="left"><code>@ComponentScan</code></td>
+<td align="left"><strong>组件扫描</strong>。默认扫描启动类所在的包及其所有子包下的组件（如 <code>@Component</code>, <code>@Service</code> 等）。</td>
+<td align="left">(通常由 <code>@SpringBootApplication</code> 隐式包含)</td>
+</tr>
+<tr>
+<td align="left"><code>@Configuration</code></td>
+<td align="left"><strong>声明配置类</strong>。将一个类标记为 Spring 的配置源。这个类中可以使用 <code>@Bean</code> 注解来定义 Bean。</td>
+<td align="left"><code>java @Configuration public class AppConfig &#123; @Bean public RestTemplate restTemplate() &#123; return new RestTemplate(); &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Bean</code></td>
+<td align="left"><strong>定义 Bean</strong>。用在方法上，告诉 Spring 这个方法的返回值是一个需要注册到容器中的 Bean。Spring 会负责管理这个对象的生命周期。</td>
+<td align="left">(见 <code>@Configuration</code> 示例)</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="二、-组件与依赖注入注解-IoC-DI"><a href="#二、-组件与依赖注入注解-IoC-DI" class="headerlink" title="二、 组件与依赖注入注解 (IoC&#x2F;DI)"></a>二、 组件与依赖注入注解 (IoC&#x2F;DI)</h4><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+<th align="left">核心示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>@Component</code></strong></td>
+<td align="left"><strong>通用组件注解</strong>。将一个类标记为 Spring 管理的组件。它是所有构造型注解（如 <code>@Service</code>, <code>@Repository</code>）的基础。</td>
+<td align="left"><code>java @Component public class MyUtility &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Service</code></td>
+<td align="left"><strong>业务逻辑层 (Service) 注解</strong>。语义上更清晰，表明这是一个业务服务类。功能上与 <code>@Component</code> 相同。</td>
+<td align="left"><code>java @Service public class UserServiceImpl implements UserService &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Repository</code></td>
+<td align="left"><strong>数据访问层 (DAO) 注解</strong>。用于标记数据访问组件。它除了具备 <code>@Component</code> 的功能外，还能将特定的数据访问异常（如 JDBC 异常）转译为 Spring 的统一数据访问异常。</td>
+<td align="left"><code>java @Repository public interface UserRepository extends JpaRepository&lt;User, Long&gt; &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>@Autowired</code></strong></td>
+<td align="left"><strong>按类型自动注入</strong>。Spring IoC 容器会自动查找匹配类型的 Bean 并注入。这是最常用的依赖注入注解。</td>
+<td align="left"><code>java @Service public class OrderService &#123; @Autowired private UserService userService; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Resource</code></td>
+<td align="left"><strong>按名称&#x2F;类型注入</strong>。Java EE 的标准 (JSR-250)。默认按名称注入，如果找不到，则按类型注入。功能强大且灵活。</td>
+<td align="left"><code>java @Service public class ProductService &#123; @Resource private UserService userServiceImpl; // 注入名为&quot;userServiceImpl&quot;的Bean &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Qualifier</code></td>
+<td align="left"><strong>指定注入的 Bean 名称</strong>。当同一类型有多个 Bean 实现时，与 <code>@Autowired</code> 配合使用，通过名称明确指定要注入哪一个。</td>
+<td align="left"><code>java @Autowired @Qualifier(&quot;normalUserService&quot;) private UserService userService;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Value</code></td>
+<td align="left"><strong>注入配置文件中的值</strong>。用于从 <code>application.properties</code> 或 <code>application.yml</code> 文件中读取配置值。</td>
+<td align="left"><code>java @Value(&quot;$&#123;server.port&#125;&quot;) private String serverPort;</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="三、-Web-开发注解-Controller-层"><a href="#三、-Web-开发注解-Controller-层" class="headerlink" title="三、 Web 开发注解 (Controller 层)"></a>三、 Web 开发注解 (Controller 层)</h4><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+<th align="left">核心示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>@RestController</code></strong></td>
+<td align="left"><strong>声明 RESTful 控制器</strong>。一个复合注解，包含了 <code>@Controller</code> 和 <code>@ResponseBody</code>。表示这个类中的所有方法返回的都是 JSON&#x2F;XML 等数据，而不是视图（页面）。</td>
+<td align="left"><code>java @RestController @RequestMapping(&quot;/api/users&quot;) public class UserController &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Controller</code></td>
+<td align="left"><strong>声明传统 MVC 控制器</strong>。用于返回视图（如 Thymeleaf 或 JSP 页面）的场景。</td>
+<td align="left"><code>java @Controller public class PageController &#123; @GetMapping(&quot;/home&quot;) public String homePage() &#123; return &quot;index&quot;; // 返回 index.html 视图 &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>@RequestMapping</code></strong></td>
+<td align="left"><strong>路径映射</strong>。可以将 HTTP 请求映射到控制器的处理方法上。可以标注在类或方法上。</td>
+<td align="left"><code>java @RestController @RequestMapping(&quot;/api/v1&quot;) // 类级别映射 public class ApiController &#123; @RequestMapping(&quot;/status&quot;) // 方法级别映射 public String getStatus()&#123; return &quot;OK&quot;; &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@GetMapping</code></td>
+<td align="left"><strong>处理 GET 请求</strong>。<code>@RequestMapping(method = RequestMethod.GET)</code> 的简写形式。</td>
+<td align="left"><code>@GetMapping(&quot;/&#123;id&#125;&quot;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>@PostMapping</code></td>
+<td align="left"><strong>处理 POST 请求</strong>。<code>@RequestMapping(method = RequestMethod.POST)</code> 的简写形式。</td>
+<td align="left"><code>@PostMapping(&quot;/create&quot;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>@PutMapping</code></td>
+<td align="left"><strong>处理 PUT 请求</strong>。<code>@RequestMapping(method = RequestMethod.PUT)</code> 的简写形式。</td>
+<td align="left"><code>@PutMapping(&quot;/&#123;id&#125;&quot;)</code></td>
+</tr>
+<tr>
+<td align="left"><code>@DeleteMapping</code></td>
+<td align="left"><strong>处理 DELETE 请求</strong>。<code>@RequestMapping(method = RequestMethod.DELETE)</code> 的简写形式。</td>
+<td align="left"><code>@DeleteMapping(&quot;/&#123;id&#125;&quot;)</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>@PathVariable</code></strong></td>
+<td align="left"><strong>获取路径参数</strong>。用于从 URL 路径中提取变量值（如 <code>/users/&#123;id&#125;</code> 中的 <code>id</code>）。</td>
+<td align="left"><code>java @GetMapping(&quot;/&#123;userId&#125;&quot;) public User getUserById(@PathVariable Long userId) &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>@RequestParam</code></strong></td>
+<td align="left"><strong>获取查询参数</strong>。用于从 URL 的查询字符串中获取参数（如 <code>/search?q=keyword</code> 中的 <code>q</code>）。</td>
+<td align="left"><code>java @GetMapping(&quot;/search&quot;) public List&lt;User&gt; search(@RequestParam(&quot;keyword&quot;) String keyword) &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>@RequestBody</code></strong></td>
+<td align="left"><strong>获取请求体数据</strong>。常用于 POST&#x2F;PUT 请求，将请求体中的 JSON&#x2F;XML 数据自动反序列化为 Java 对象。</td>
+<td align="left"><code>java @PostMapping(&quot;/users&quot;) public User createUser(@RequestBody User user) &#123; // ... &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@ResponseBody</code></td>
+<td align="left"><strong>将返回值序列化为响应体</strong>。将方法的返回值（通常是 Java 对象）自动序列化为 JSON&#x2F;XML 格式，并写入 HTTP 响应体。<code>@RestController</code> 已默认包含此注解。</td>
+<td align="left">(通常在 <code>@RestController</code> 中隐式使用)</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="四、-数据访问与事务注解"><a href="#四、-数据访问与事务注解" class="headerlink" title="四、 数据访问与事务注解"></a>四、 数据访问与事务注解</h4><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+<th align="left">核心示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>@Transactional</code></strong></td>
+<td align="left"><strong>声明事务</strong>。可以标注在类或方法上。当标注在类上时，表示该类的所有 <code>public</code> 方法都将应用事务。可以配置隔离级别、传播行为等。</td>
+<td align="left"><code>java @Service public class BankService &#123; @Transactional(propagation = Propagation.REQUIRED) public void transfer(Long fromId, Long toId, BigDecimal amount) &#123; // ...数据库操作 &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Entity</code></td>
+<td align="left"><strong>JPA 实体类注解</strong>。表明这个类是一个实体类，它将映射到数据库中的一个表。</td>
+<td align="left"><code>java @Entity @Table(name = &quot;t_user&quot;) public class User &#123; @Id private Long id; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Table</code></td>
+<td align="left"><strong>指定表名</strong>。与 <code>@Entity</code> 配合使用，指定实体类对应的数据库表名。</td>
+<td align="left">(见 <code>@Entity</code> 示例)</td>
+</tr>
+<tr>
+<td align="left"><code>@Id</code></td>
+<td align="left"><strong>主键注解</strong>。指定实体类中的一个字段为数据库表的主键。</td>
+<td align="left">(见 <code>@Entity</code> 示例)</td>
+</tr>
+<tr>
+<td align="left"><code>@GeneratedValue</code></td>
+<td align="left"><strong>主键生成策略</strong>。指定主键的生成方式，如自增 (<code>IDENTITY</code>)、序列 (<code>SEQUENCE</code>) 等。</td>
+<td align="left"><code>@GeneratedValue(strategy = GenerationType.IDENTITY)</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Column</code></td>
+<td align="left"><strong>指定列名和属性</strong>。将实体类字段映射到数据库表的列，并可以定义列的属性（如名称、长度、是否允许为空等）。</td>
+<td align="left"><code>@Column(name = &quot;user_name&quot;, nullable = false, length = 50)</code></td>
+</tr>
+</tbody></table>
+<h4 id="五、-辅助与增强注解"><a href="#五、-辅助与增强注解" class="headerlink" title="五、 辅助与增强注解"></a>五、 辅助与增强注解</h4><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+<th align="left">核心示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>@Slf4j</code> (Lombok)</strong></td>
+<td align="left"><strong>自动生成日志对象</strong>。由 Lombok 库提供，在编译时会自动为类生成一个名为 <code>log</code> 的 <code>SLF4J</code> 日志对象，省去手动编写 <code>Logger log = LoggerFactory.getLogger(...)</code> 的样板代码。</td>
+<td align="left"><code>java @Slf4j @Service public class MyService &#123; public void doSomething() &#123; log.info(&quot;Doing something...&quot;); &#125; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@Data</code> (Lombok)</td>
+<td align="left">** Lombok 注解**。自动为类的所有字段生成 getter&#x2F;setter 方法、<code>toString()</code>, <code>equals()</code>, <code>hashCode()</code> 和一个无参构造函数。</td>
+<td align="left"><code>java @Data public class UserDTO &#123; private String username; private String email; &#125;</code></td>
+</tr>
+<tr>
+<td align="left"><code>@ConfigurationProperties</code></td>
+<td align="left"><strong>类型安全的属性绑定</strong>。将配置文件 (<code>application.yml</code>) 中的一组属性值，自动绑定到一个 Java 类的字段上，实现强类型配置。</td>
+<td align="left"><code>yaml my-app: name: &quot;My Awesome App&quot; version: &quot;1.0.0&quot; ``java @Component @ConfigurationProperties(prefix = &quot;my-app&quot;) @Data public class AppProperties &#123; private String name; private String version; &#125;</code></td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">skippy</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/09/10/SpringBoot/">http://example.com/2025/09/10/SpringBoot/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">skippy's life</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/wangfei.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/05/23/MCP/" title="MCP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MCP</div></div><div class="info-2"><div class="info-item-1">Model Context Protocol 模型上下文协议。但却没有规定与模型如何进行交互，而是规定了 Host 和 Server 之间的交互，是让模型感知外部环境的协议，所以称为模型上下文协议，MCP规定了统一的工具发现和调用协议 MCP基础MCP 的用途简单来说，MCP 是能够让大模型更好地调用各类工具的协议，大模型只能进行问答而无法主动调用外部工具，而 MCP 的出现使大模型拥有了使用各种外部工具的能力，这是很重要的一个能力，我们熟悉的 Cursor 本身就是一个 MCP Host MCP server一个符合 MCP 协议的可执行程序，通常由 python 和 node.js 编写，可以本地使用可以联网使用，我们可以帮它们理解成一个一个工具，每个工具可以解决一个具体问题，例如查询天气、查询新闻、查看文件夹…    MCP 进阶分析明白这段日志,就能理解 MCP 协议的内容了 完整交互日志初始化连接客户端请求： 12345678910111213&#123;  &quot;method&quot;: &quot;initialize&quot;, ...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/wangfei.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">skippy</div><div class="author-info-description">time will tell</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/skippy-404"><i class="fab fa-github"></i><span>follow me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/skippy-404" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:skippy1010177@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: ##47636e;"></i></a><a class="social-icon" href="/img/wx.jpg" target="_blank" title="WeChat"><i class="fab fa-weixin" style="color: #7bb342;"></i></a><a class="social-icon" href="https://music.163.com/#/user/home?id=1352685498" target="_blank" title="网易云音乐"><i class="fa fa-music" style="color: #181b25;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-Boot-%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Spring Boot 常用注解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">一、 启动与核心配置注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E7%BB%84%E4%BB%B6%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3-IoC-DI"><span class="toc-number">1.2.</span> <span class="toc-text">二、 组件与依赖注入注解 (IoC&#x2F;DI)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81-Web-%E5%BC%80%E5%8F%91%E6%B3%A8%E8%A7%A3-Controller-%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text">三、 Web 开发注解 (Controller 层)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E4%B8%8E%E4%BA%8B%E5%8A%A1%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">四、 数据访问与事务注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E8%BE%85%E5%8A%A9%E4%B8%8E%E5%A2%9E%E5%BC%BA%E6%B3%A8%E8%A7%A3"><span class="toc-number">1.5.</span> <span class="toc-text">五、 辅助与增强注解</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By skippy</div><div class="footer_custom_text">喜中带忧 暗中有光 怎么度 怎么量</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://vercel.skippy.uno',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://vercel.skippy.uno',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script>window.newestComments = {
+  changeContent: content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<code>.*?<\/code>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g, "") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0, 150) + '...'
+    }
+    return content
+  },
+
+  generateHtml: (array, ele) => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class="aside-list-item">'
+
+        if (true && array[i].avatar) {
+          const imgAttr = 'src'
+          const lazyloadNative = ''
+          result += `<a href="${array[i].url}" class="thumbnail"><img ${imgAttr}="${array[i].avatar}" alt="${array[i].nick}" ${lazyloadNative}></a>`
+        }
+
+        result += `<div class="content">
+        <a class="comment" href="${array[i].url}" title="${array[i].content}">${array[i].content}</a>
+        <div class="name"><span>${array[i].nick} / </span><time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '暂无评论'
+    }
+
+    ele.innerHTML = result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh(ele)
+  },
+
+  newestCommentInit: (name, getComment) => {
+    const $dom = document.querySelector('#card-newest-comments .aside-list')
+    if ($dom) {
+      const data = btf.saveToLocal.get(name)
+      if (data) {
+        newestComments.generateHtml(JSON.parse(data), $dom)
+      } else {
+        getComment($dom)
+      }
+    }
+  },
+
+  run: (name, getComment) => {
+    newestComments.newestCommentInit(name, getComment)
+    btf.addGlobalFn('pjaxComplete', () => newestComments.newestCommentInit(name, getComment), name)
+  }
+}</script><script>window.addEventListener('load', () => {
+  const keyName = 'twikoo-newest-comments'
+  const { changeContent, generateHtml, run } = window.newestComments
+
+  const getComment = ele => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://vercel.skippy.uno',
+        region: '',
+        pageSize: 1,
+        includeReply: true
+      }).then(res => {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        btf.saveToLocal.set(keyName, JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray, ele)
+      }).catch(err => {
+        console.error(err)
+        ele.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  run(keyName, getComment)
+})</script><script async data-pjax src="/js/anzhiyu.js"></script><script async data-pjax src="/js/anzhiyufunction.js"></script><script async src="/js/anzhiyuOnlyOne.js"></script><div class="aplayer no-destroy" data-id="12327206939" data-server="netease" data-type="playlist" data-order="list" data-fixed="true" data-preload="auto" data-autoplay="false" data-mutex="true" ></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      true 
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
